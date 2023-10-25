@@ -1,0 +1,30 @@
+{
+  "development": {
+    "username": "sa",
+    "password": "ads@2020",
+    "database": "konatus",
+    "host": "COMPUTER-PC",
+    "port": 1433,
+    "dialect": "mssql",
+    "dialectOptions": {
+      "options": {
+        "encrypt": false
+      },
+      "trustServerCertificate": true
+    }
+  },
+  "test": {
+    "username": "sa",
+    "password": "senha",
+    "database": "konatus",
+    "host": "localhost",
+    "dialect": "mssql"
+  },
+  "production": {
+    "username": "sa",
+    "password": "senha",
+    "database": "konatus",
+    "host": "localhost",
+    "dialect": "mssql"
+  }
+}
