@@ -1,7 +1,8 @@
-const GraphicModel = require('../models/graphicModel.js')
+// controllers/graficoController.js
+const GraficoModel = require('../src/models/graphicModel');
 
-const graphicModel = new GraphicModel();
+const graficoModel = new GraficoModel();
 
-exports.getData = (req, res) => {
-    return data = graphicModel.getData();
+exports.obterDados = (req, res) => {
+    return dados = graficoModel.getDados();
 };

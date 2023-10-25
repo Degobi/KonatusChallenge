@@ -4,6 +4,7 @@
 <head>
     <title>Konatus Challenge</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -21,8 +22,9 @@
             labels: [
             'AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
             'MG', 'MS', 'MT', 'PA', 'PB', 'PE', 'PI', 'PR', 'RJ', 'RN',
-            'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO'],
-                datasets: [{
+            'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO'
+            ],
+            datasets: [{
                     label: '# of Votes Candidate A',
                     data: chartData,
                     borderWidth: 1
@@ -46,11 +48,18 @@
         });
     </script>
 
-    <h1>Enviar Arquivo XLS</h1>
-    <form  method="post" enctype="multipart/form-data">
-        <input type="file" name="xlsFile">
-        <button type="submit">Enviar</button>
-    </form>
+    <div style="margin-left: 5%;">
+        <h1>Importar Pesquisa Eleitoral</h1>
+        <div style="display: flex; justify-content: space-between;">
+            <form method="post" enctype="multipart/form-data">
+                <input type="file" name="xlsFile">
+                <button class="button" type="submit">Enviar</button>
+            </form>
+            <button class="button" style="float: right; margin-right: 8%; height: 40px;">Atualizar Base</button>
+        </div>
+    </div>
+
+
 </body>
 
 </html>
