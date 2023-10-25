@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Konatus Challenge</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');;
+        var chartData = '<%- data %>';
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+            labels: [
+            'AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
+            'MG', 'MS', 'MT', 'PA', 'PB', 'PE', 'PI', 'PR', 'RJ', 'RN',
+            'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO'],
+                datasets: [{
+                    label: '# of Votes Candidate A',
+                    data: chartData,
+                    borderWidth: 1
+                }, {
+                    label: '# of Votes Candidate B',
+                    data: chartData,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                spanGaps: true,
+                layout: {
+                    padding: 100
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+    <h1>Enviar Arquivo XLS</h1>
+    <form  method="post" enctype="multipart/form-data">
+        <input type="file" name="xlsFile">
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+
+</html>

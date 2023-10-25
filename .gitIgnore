@@ -1,0 +1,29 @@
+# Módulos Node.js
+node_modules/
+
+# Logs e arquivos de saída
+logs/
+*.log
+
+# Arquivos de ambiente
+.env
+
+# Arquivos de compilação nativa
+build/
+
+# Arquivos de configuração local
+config/local.js
+
+# Arquivos de pacotes de gerenciamento de dependências
+package-lock.json
+yarn.lock
+
+# Arquivos temporários
+tmp/
+.temp/
+*.swp
+
+# Arquivos gerados durante testes
+coverage/
+
+# Outros arquivos ou pastas personalizados que você deseja ignorar
