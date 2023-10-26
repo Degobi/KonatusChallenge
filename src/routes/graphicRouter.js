@@ -2,8 +2,11 @@ const express           = require('express');
 const router            = express.Router();
 const graphicController = require('../controllers/graphicController'); 
 
-router.get('/', async (req, res) => { await graphicController.getData(req, res)});
+router.get('/', (req, res) => { 
+    const data = graphicController.getData(req, res);
+    res.render('index', { data });
+});
 
-//router.get('/outra-rota', graphicController.outraRota);
+router.post('/update-base', async (req, res) => { await graphicController.updateBaseCounty(req, res) });
 
 module.exports = router;
