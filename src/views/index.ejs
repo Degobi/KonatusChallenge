@@ -15,27 +15,40 @@
     </div>
 
     <script>
-        const ctx = document.getElementById('myChart').getContext('2d');;
-        var chartData = '<%- data %>';
+        const ctx = document.getElementById('myChart').getContext('2d');
 
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-            labels: [
+        const chartDataCandidateA = [ <%- data.CandidatoA.join(', ') %> ];
+        const chartDataCandidateB = [ <%- data.CandidatoB.join(', ') %> ];
+
+        const estados = [
             'AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
             'MG', 'MS', 'MT', 'PA', 'PB', 'PE', 'PI', 'PR', 'RJ', 'RN',
             'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO'
-            ],
-            datasets: [{
+        ];
+
+        const chartData = {
+            labels: estados,
+            datasets: [
+                {
                     label: '# of Votes Candidate A',
-                    data: chartData,
-                    borderWidth: 1
-                }, {
+                    barPercentage: 0.5,
+                    barThickness: 6,
+                    data: chartDataCandidateA,
+                    borderWidth: 1,
+                },
+                {
                     label: '# of Votes Candidate B',
-                    data: chartData,
-                    borderWidth: 1
-                }]
-            },
+                    barPercentage: 0.5,
+                    barThickness: 6,
+                    data: chartDataCandidateB,
+                    borderWidth: 1,
+                },
+            ],
+        };
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: chartData,
             options: {
                 spanGaps: true,
                 layout: {
@@ -53,9 +66,13 @@
     <div class="container">
         <h1>Importar Pesquisa Eleitoral</h1>
         <div class="row">
-            <form class="form-group" method="post" enctype="multipart/form-data">
-                <input type="file" name="xlsFile">
-                <button class="btn btn-primary" type="submit">Enviar</button>
+            <form class="form-group" method="post" enctype="multipart/form-data"
+                onsubmit="sendUpdateRequest(event); return false;">
+                <input type="file" name="csv" id="csv-file-input">
+                <button class="btn btn-primary" id="updateSendBaseButton" type="submit">Enviar</button>
+                <div class="spinner-border text-primary d-none" id="update-loading-indicator" role="status">
+                    <span class="visually-hidden">Carregando...</span>
+                </div>
             </form>
 
 
@@ -68,19 +85,55 @@
                 </div>
             </form>
 
-            
+
             <script>
                 const updateBaseButton = document.getElementById('updateBaseButton');
+                const updateSendBaseButton = document.getElementById('updateSendBaseButton');
                 const loadingIndicator = document.getElementById('loading-indicator');
-            
+                const updateLoadingIndicator = document.getElementById('update-loading-indicator');
+
+                async function sendUpdateRequest(event) {
+                    event.preventDefault();
+                    updateSendBaseButton.disabled = true;
+                    updateLoadingIndicator.classList.remove('d-none');
+
+                    try {
+                        const fileInput = document.getElementById('csv-file-input');
+                        const file = fileInput.files[0];
+
+                        const formData = new FormData();
+                        formData.append('csv', file);
+
+                        const response = await fetch('/save-csv', {
+                            method: 'POST',
+                            body: formData,
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+
+                            if (result) {
+                                updateChart(result)
+                                showMessage('Pesquisa importada com sucesso!');
+                            }
+                        }
+
+                    } catch (error) {
+                        showMessage(error, true);
+                    } finally {
+                        updateSendBaseButton.disabled = false;
+                        updateLoadingIndicator.classList.add('d-none');
+                    }
+                }
+
                 async function sendRequest(event) {
                     event.preventDefault();
                     updateBaseButton.disabled = true;
                     loadingIndicator.classList.remove('d-none');
-            
+
                     try {
                         const response = await fetch('/update-base', { method: 'POST' });
-            
+
                         if (response.ok) {
                             const message = await response.text();
                             showMessage(message);
@@ -107,8 +160,48 @@
                     function clearMessage() {
                         alertContainer.innerHTML = '';
                     }
-            }
+                }
 
+                function updateChart(result) {
+                    const ctx = document.getElementById('myChart').getContext('2d');
+
+                    const chartData = {
+                        labels: estados,
+                        datasets: [
+                            {
+                                label: '# of Votes Candidate A',
+                                data: result.CandidatoA.join(', ').split(', ').map(Number),
+                                borderWidth: 1,
+                            },
+                            {
+                                label: '# of Votes Candidate B',
+                                data: result.CandidatoB.join(', ').split(', ').map(Number),
+                                borderWidth: 1,
+                            },
+                        ],
+                    };
+                    const chart = Chart.getChart("myChart");
+
+                    if (chart) {
+                        chart.destroy();
+                    }
+
+                    chart = new Chart(ctx, {
+                        type: 'bar',
+                        data: chartData,
+                        options: {
+                            spanGaps: true,
+                            layout: {
+                                padding: 100,
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                },
+                            },
+                        },
+                    });
+                }
             </script>
 
             <div id="alert-container"></div>
