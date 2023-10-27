@@ -14,8 +14,7 @@ class GraphicModel {
 
     async getData() {
         const electoralResearchData = await this.getElectoralResearchData();
-
-        const groupsByState = {};
+        const groupsByState         = {};
 
         for (const linhaPesquisa of electoralResearchData) {
             const state = linhaPesquisa.estado;
@@ -41,9 +40,7 @@ class GraphicModel {
             }
         }
 
-        const data = this.getDataByCandidate(groupsByState);
-
-        return data;
+        return this.getDataByCandidate(groupsByState);
     }
 
     async updateBaseCounty(req, res) {
@@ -56,11 +53,10 @@ class GraphicModel {
             const nomeDoArquivo = 'estimativa_dou_2021.xls';
             const caminhoDoArquivo = path.join(__dirname, '..', 'files', nomeDoArquivo);
 
-            const workbook = xlsx.readFile(caminhoDoArquivo);
-            console.log(workbook)
+            const workbook  = xlsx.readFile(caminhoDoArquivo);
             const worksheet = workbook.Sheets[workbook.SheetNames[1]];
-        
-            const data = []
+            const data      = []
+
             this.dataFromWorkSheet(data, worksheet)
         
             await connection.authenticate(); 
@@ -100,7 +96,7 @@ class GraphicModel {
                     transaction 
                 }))
 
-                console.log(`Municípios ${idx} de ${data.length} incluído...`);
+                //console.log(`Municípios ${idx} de ${data.length} incluído...`);
                 idx++;
             }
 
@@ -136,7 +132,7 @@ class GraphicModel {
 
             dataSet.push(record);
     
-            if (i == rowCount) console.log(`*** Leitura do registro ${i - 1}/${rowCount - 1} concluída...`)
+            //if (i == rowCount) console.log(`*** Leitura do registro ${i - 1}/${rowCount - 1} concluída...`)
         }
     }
 
