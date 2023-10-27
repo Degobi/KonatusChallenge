@@ -104,17 +104,19 @@
                         const formData = new FormData();
                         formData.append('csv', file);
 
-                        const response = await fetch('/save-csv', {
+                        let response = await fetch('/save-csv', {
                             method: 'POST',
                             body: formData,
                         });
 
                         if (response.ok) {
-                            const result = await response.json();
+                            let result = await response.json();
 
-                            if (result) {
+                            if (result != null && result.CandidatoA) {
                                 updateChart(result)
                                 showMessage('Pesquisa importada com sucesso!');
+                            } else {
+                                showMessage(result, true)
                             }
                         }
 
@@ -132,10 +134,10 @@
                     loadingIndicator.classList.remove('d-none');
 
                     try {
-                        const response = await fetch('/update-base', { method: 'POST' });
+                        let response = await fetch('/update-base', { method: 'POST' });
 
                         if (response.ok) {
-                            const message = await response.text();
+                            let message = await response.text();
                             showMessage(message);
                         }
                     } catch (error) {
@@ -165,7 +167,7 @@
                 function updateChart(result) {
                     const ctx = document.getElementById('myChart').getContext('2d');
 
-                    const chartData = {
+                    let chartData = {
                         labels: estados,
                         datasets: [
                             {
@@ -180,7 +182,7 @@
                             },
                         ],
                     };
-                    const chart = Chart.getChart("myChart");
+                    let chart = Chart.getChart("myChart");
 
                     if (chart) {
                         chart.destroy();
