@@ -30,14 +30,14 @@
             labels: estados,
             datasets: [
                 {
-                    label: '# of Votes Candidate A',
+                    label: `# de Votos Candidato A | total (${chartDataCandidateA.reduce((total, voto) => total + voto, 0).toLocaleString('pt-BR')})`,
                     barPercentage: 0.5,
                     barThickness: 6,
                     data: chartDataCandidateA,
                     borderWidth: 1,
                 },
                 {
-                    label: '# of Votes Candidate B',
+                    label: `# de Votos Candidato B | total (${chartDataCandidateB.reduce((total, voto) => total + voto, 0).toLocaleString('pt-BR')})`,
                     barPercentage: 0.5,
                     barThickness: 6,
                     data: chartDataCandidateB,
@@ -167,17 +167,20 @@
                 function updateChart(result) {
                     const ctx = document.getElementById('myChart').getContext('2d');
 
+                    let CandidatoA =  result.CandidatoA.join(', ').split(', ').map(Number);
+                    let CandidatoB =  result.CandidatoB.join(', ').split(', ').map(Number);
+
                     let chartData = {
                         labels: estados,
                         datasets: [
                             {
-                                label: '# of Votes Candidate A',
-                                data: result.CandidatoA.join(', ').split(', ').map(Number),
+                                label: `# de Votos Candidato A | Total (${CandidatoA.reduce((total, voto) => total + voto, 0).toLocaleString('pt-BR')})`,
+                                data: CandidatoA,
                                 borderWidth: 1,
                             },
                             {
-                                label: '# of Votes Candidate B',
-                                data: result.CandidatoB.join(', ').split(', ').map(Number),
+                                label: `# de Votos Candidato B | Total (${CandidatoB.reduce((total, voto) => total + voto, 0).toLocaleString('pt-BR')})`,
+                                data: CandidatoB,
                                 borderWidth: 1,
                             },
                         ],
