@@ -141,6 +141,10 @@ class GraphicModel {
         if (!req.path)
             return 'Nenhum arquivo foi inserido!'
 
+        let countRecords = await County.findOne();
+        if (!countRecords)
+            return 'Atualize a base antes de prosseguir! Para isso clique em "Atualizar Base".'
+
         try {
           const schema = {
             id_pesquisa     : 'A',
@@ -246,4 +250,5 @@ class GraphicModel {
         return data;
     }
 }
+
 module.exports = GraphicModel;
